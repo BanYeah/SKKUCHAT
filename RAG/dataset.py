@@ -1,13 +1,13 @@
 import sys, os
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 
-import bm25, crawling, query_generation
+import bm25, crawling, utils.QueryGen as QueryGen
 import json
 from torch.utils.data import Dataset
 from transformers import AutoTokenizer
 
 def get_input_ids(query, corpus):
-    bm25_model = bm25.BM25(crawling.get_data(), query_generation.get_query())
+    bm25_model = bm25.BM25(crawling.get_data(), QueryGen.get_query())
 
     retrieved_document_topk = {}
     retrieved_document_ids = bm25_model.retrieve_topk(query, k)
@@ -41,7 +41,7 @@ class SKCTDataset(Dataset):
         self.k = k
 
         # data에 retrieved document k개 추가
-        self.bm25_model = bm25.BM25(crawling.get_data(), query = query_generation.get_query())
+        self.bm25_model = bm25.BM25(crawling.get_data(), query = QueryGen.get_query())
 
         retrieved_document_topk = {}
         for e in data:

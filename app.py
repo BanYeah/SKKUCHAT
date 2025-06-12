@@ -88,3 +88,4 @@ if prompt:
 
             st.chat_message("assistant").write(response)
             st.session_state["chat"].append(("assistant", response))
+        st.rerun()
